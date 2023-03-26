@@ -1,0 +1,59 @@
+<div class="main">
+  <div class="container-fluid">
+    
+    <div *ngIf="error" class="alert alert-danger alert-dismissible fade show mt-5">
+      <strong>{{error}}</strong>
+    </div>
+
+    <div class="toolbar my-5" *ngIf="!error">
+
+      <div class="search-employee">
+        <input type="search" class="form-control" placeholder="Search Employee here..." [(ngModel)]="searchText">
+        <!-- (input)="searchEmployees(searchInput.value)" #searchInput -->
+      </div>
+
+      <div class="dropdown add-filter" #close>
+        <a class="btn btn-outline-primary dropdown-toggle" href="javascript:void(0)" (click)="openSubMenu()">Filter</a>
+
+        <ul class="sub-menu mt-4" *ngIf="dropdown">
+          <li *ngFor="let x of unique"><a class="dropdown-item" href="javascript:void(0)" (click)="filter(x)">{{x==''?"All": x}}</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="employee-details" *ngIf="loading && !error">
+      <div class="row">
+
+        <div class="col">
+          <table class="border table table table-striped mx-auto">
+              <thead class="text-center text-secondary fs-5 fst-italic">
+                
+                <td class="py-2">Name</td>
+                <td class="py-2">Email</td>
+                <td class="py-2">Designation</td>
+                <td class="py-2">Project Name</td>
+              </thead>
+              <tbody class="text-center fs-5 fst-italic">
+                  <tr *ngFor='let employee of tempemployees | slice:viewStart:viewEnd | filter: searchText'>
+                    <td class="py-2">{{employee.firstName}} {{employee.lastName}}</td>
+                    <td class="py-2">{{employee.email}}</td>
+                    <td class="py-2">{{employee.designation}}</td>
+                    <td class="py-2">{{employee.project}}</td>
+                  </tr>
+              </tbody>
+          </table>
+          <button class="btn btn-outline-primary" *ngIf="employees.length!=0" (click)="viewMore()"> View More</button>
+        </div>
+      </div>
+    </div> 
+
+    <div class="d-flex justify-content-center" *ngIf="!loading && !error">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <h2 class="text-center" *ngIf="!loading && !error">Loading...</h2>
+  </div>
+</div >
+
